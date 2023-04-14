@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <RootNamespace>ADS_B_Lib</RootNamespace>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="telnet\ex.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="dataoutput\" />
+    <Folder Include="dataprocessing\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="telnet\ex.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="telnet\TelnetWrapper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+</Project>

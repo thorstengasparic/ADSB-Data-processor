@@ -1,0 +1,12 @@
+D:\dev\TGA\ADS-B-Console\ADS-B-Lib\bin\Debug\net6.0\ADS-B-Lib.deps.json
+D:\dev\TGA\ADS-B-Console\ADS-B-Lib\bin\Debug\net6.0\ADS-B-Lib.dll
+D:\dev\TGA\ADS-B-Console\ADS-B-Lib\bin\Debug\net6.0\ADS-B-Lib.pdb
+D:\dev\TGA\ADS-B-Console\ADS-B-Lib\obj\Debug\net6.0\ADS-B-Lib.csproj.AssemblyReference.cache
+D:\dev\TGA\ADS-B-Console\ADS-B-Lib\obj\Debug\net6.0\ADS-B-Lib.GeneratedMSBuildEditorConfig.editorconfig
+D:\dev\TGA\ADS-B-Console\ADS-B-Lib\obj\Debug\net6.0\ADS-B-Lib.AssemblyInfoInputs.cache
+D:\dev\TGA\ADS-B-Console\ADS-B-Lib\obj\Debug\net6.0\ADS-B-Lib.AssemblyInfo.cs
+D:\dev\TGA\ADS-B-Console\ADS-B-Lib\obj\Debug\net6.0\ADS-B-Lib.csproj.CoreCompileInputs.cache
+D:\dev\TGA\ADS-B-Console\ADS-B-Lib\obj\Debug\net6.0\ADS-B-Lib.dll
+D:\dev\TGA\ADS-B-Console\ADS-B-Lib\obj\Debug\net6.0\refint\ADS-B-Lib.dll
+D:\dev\TGA\ADS-B-Console\ADS-B-Lib\obj\Debug\net6.0\ADS-B-Lib.pdb
+D:\dev\TGA\ADS-B-Console\ADS-B-Lib\obj\Debug\net6.0\ref\ADS-B-Lib.dll
