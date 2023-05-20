@@ -1,20 +1,30 @@
+using System.Drawing;
+using System;
 using System.Net.Sockets;
 using System.Text;
-public  class Connection
+using ADS_B_Lib.dataprocessing;
+
+public  class MessageReceiver
 {
     private readonly TcpClient _client;
     private readonly NetworkStream _stream;
     private readonly Task _task;
-    private readonly CancellationTokenSource _cts;
+    private readonly CancellationTokenSource cancelationTokenSource;
+    private readonly IADSB_DataProcessor dataProcessor;
 
     private const int bufferSize = ushort.MaxValue; // 65536
 
-    public Connection(TcpClient client)
+    public MessageReceiver(TcpClient client, IADSB_DataProcessor dataProcessor, CancellationTokenSource? cancellationTokenSource)
     {
+        if (cancellationTokenSource == null) return;
         _client = client;
         _stream = _client.GetStream();
-        _cts = new CancellationTokenSource();
-        _task = ReceiveAsync(_cts.Token);
+
+        this.cancelationTokenSource = cancelationTokenSource;
+
+        _task = RawReceiveAsync(cancelationTokenSource.Token);
+
+        this.dataProcessor = dataProcessor;
         Console.WriteLine($"Client connected: {_client.Client.RemoteEndPoint}");
     }
 
@@ -31,7 +41,12 @@ public  class Connection
         await _stream.WriteAsync(data).ConfigureAwait(false);
     }
 
-    public async Task ReceiveAsync(CancellationToken token)
+    void ProcessRawBuffer(byte[] rawoutput)
+    {
+        this.dataProcessor.RawData(rawoutput);
+    }
+
+    public async Task RawReceiveAsync(CancellationToken token)
     {
         byte[] buffer = new byte[bufferSize];
         try
@@ -42,9 +57,6 @@ public  class Connection
                 int size = BitConverter.ToUInt16(buffer, 0);
                 int offset = 0;
 
-                // normally there will be only one iteration of this loop but
-                // ReadAsync doesn't guarantee that 'received' will always match
-                // requested bytes amount
                 while (offset < size)
                 {
                     int received = await _stream.ReadAsync(buffer.AsMemory(offset, size - offset), token).ConfigureAwait(false);
@@ -55,11 +67,7 @@ public  class Connection
                     }
                     offset += received;
                 }
-
-                // probably firing an event here would be helpful
-                // byte[] output = buffer.AsSpan(0, size).ToArray();
-                var data = Encoding.UTF8.GetString(buffer.AsSpan(0, size));
-                Console.WriteLine($"Data received: {data}");
+                ProcessRawBuffer(buffer.AsSpan(0, size).ToArray());
             }
         }
         catch (OperationCanceledException)
@@ -67,13 +75,12 @@ public  class Connection
             if (_client.Connected)
             {
                 _stream.Close();
+                _client.Close();
                 Console.WriteLine($"Connection to {_client.Client.RemoteEndPoint} closed.");
             }
         }
         catch (Exception ex)
         {
-            // Test the class a lot with closing the connection on both sides
-            // I'm not sure how it will behave because I didn't test it
             Console.WriteLine($"{ex.GetType().Name}: {ex.Message}");
             throw;
         }
@@ -81,7 +88,7 @@ public  class Connection
 
     public void Close()
     {
-        _cts.Cancel();
+        cancelationTokenSource.Cancel();
         _task.Wait();
     }
 }

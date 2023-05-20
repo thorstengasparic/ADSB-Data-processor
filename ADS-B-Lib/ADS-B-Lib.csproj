@@ -13,7 +13,6 @@
 
   <ItemGroup>
     <Folder Include="dataoutput\" />
-    <Folder Include="dataprocessing\" />
   </ItemGroup>
 
   <ItemGroup>
